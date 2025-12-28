@@ -1,0 +1,4 @@
+/dts-v1/;
+
+#include "qcs6490-radxa-dragon-q6a.dtsi"
+
