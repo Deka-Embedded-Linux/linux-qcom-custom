@@ -404,7 +404,7 @@ static int eud_probe(struct platform_device *pdev)
 			return dev_err_probe(chip->dev, ret,
 				"failed to read EUD_REG_EUD_EN2 register\n");
 	} else {
-		read_val = readl(chip->mode_mgr_phys + EUD_REG_EUD_EN2);
+		read_val = readl((void*)(chip->mode_mgr_phys + EUD_REG_EUD_EN2));
 	}
 
 	if (read_val) {
