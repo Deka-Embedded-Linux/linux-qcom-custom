@@ -45,6 +45,7 @@
 		pinctrl-1 = <&cam0_suspend>;
 
 		clocks = <&camcc CAM_CC_MCLK0_CLK>;
+		clock-names = "inck";
 		assigned-clocks = <&camcc CAM_CC_MCLK0_CLK>;
 		assigned-clock-rates = <24000000>;
 
