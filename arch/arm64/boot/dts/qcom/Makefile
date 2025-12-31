@@ -110,6 +110,7 @@ dtb-$(CONFIG_ARCH_QCOM) += qcs5430-fp3-addons-rb3gen2-vision-mezz.dtb
 dtb-$(CONFIG_ARCH_QCOM) += qcs5430-fp3-addons-rb3gen2-vision-mezz-hsp.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= qcs6490-addons-rb3gen2.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= qcs6490-radxa-dragon-q6a.dtb
+dtb-$(CONFIG_ARCH_QCOM)	+= qcs6490-radxa-dragon-q6a-deka.dtb
 dtb-$(CONFIG_ARCH_QCOM) += qcs6490-addons-rb3gen2-hsp.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= qcs6490-addons-rb3gen2-ia-mezz.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= qcs6490-addons-rb3gen2-ptz-mezz.dtb
