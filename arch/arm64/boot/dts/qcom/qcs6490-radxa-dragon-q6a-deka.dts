@@ -47,7 +47,7 @@
 		clocks = <&camcc CAM_CC_MCLK0_CLK>;
 		clock-names = "inck";
 		assigned-clocks = <&camcc CAM_CC_MCLK0_CLK>;
-		assigned-clock-rates = <24000000>;
+		assigned-clock-rates = <27000000>;
 
 		dovdd-supply = <&vph_pwr>;
 		avdd-supply = <&vph_pwr>;
@@ -55,7 +55,7 @@
 
 		port {
 			imx415_ep: endpoint {
-				link-frequencies = /bits/ 64 <360000000>;
+				link-frequencies = /bits/ 64 <445500000>;
 				data-lanes = <1 2 3 4>;
 				remote-endpoint = <&csiphy0_ep>;
 			};
