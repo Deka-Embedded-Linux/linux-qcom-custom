@@ -1307,6 +1307,9 @@
 
 &usb_1 {
 	status = "okay";
+};
+
+&usb_1_dwc3 {
 	dr_mode = "host";
 };
 
@@ -1331,6 +1334,9 @@
 
 &usb_2 {
 	status = "okay";
+};
+
+&usb_2_dwc3 {
 	dr_mode = "host";
 };
 
