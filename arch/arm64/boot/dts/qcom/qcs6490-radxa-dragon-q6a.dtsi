@@ -20,10 +20,16 @@
 #include "pm8350c.dtsi" /* PM7350C */
 #include "pmk8350.dtsi" /* PMK7325 */
 
+/delete-node/ &adsp_mem;
+/delete-node/ &cdsp_mem;
 /delete-node/ &wifi;
 /delete-node/ &wlan_ce_mem;
 /delete-node/ &wlan_fw_mem;
 /delete-node/ &xbl_mem;
+/delete-node/ &video_mem;
+/delete-node/ &cvp_mem;
+/delete-node/ &gpu_microcode_mem;
+/delete-node/ &trusted_apps_mem;
 
 / {
 	model = "Radxa Dragon Q6A";
@@ -230,6 +236,31 @@
 			no-map;
 		};
 
+		adsp_mem: adsp@84800000 {
+			reg = <0x0 0x84800000 0x0 0x2800000>;
+			no-map;
+		};
+
+		cdsp_mem: cdsp@87000000 {
+			reg = <0x0 0x87000000 0x0 0x1e00000>;
+			no-map;
+		};
+
+		video_mem: video@88e00000 {
+			reg = <0x0 0x88e00000 0x0 0x700000>;
+			no-map;
+		};
+
+		cvp_mem: cvp@89500000 {
+			reg = <0x0 0x89500000 0x0 0x500000>;
+			no-map;
+		};
+
+		gpu_microcode_mem: gpu-microcode@89a00000 {
+			reg = <0x0 0x89a00000 0x0 0x2000>;
+			no-map;
+		};
+
 		tz_stat_mem: tz-stat@c0000000 {
 			reg = <0x0 0xc0000000 0x0 0x100000>;
 			no-map;
@@ -245,9 +276,21 @@
 			no-map;
 		};
 
+		trusted_apps_mem: trusted-apps@c1800000 {
+			reg = <0x0 0xc1800000 0x0 0x1c00000>;
+			no-map;
+		};
+
 		debug_vm_mem: debug-vm@d0600000 {
 			reg = <0x0 0xd0600000 0x0 0x100000>;
 			no-map;
+		};
+
+		linux,cma {
+			compatible = "shared-dma-pool";
+			size = <0x0 0xF000000>;
+			reusable;
+			linux,cma-default;
 		};
 	};
 
@@ -755,6 +798,10 @@
 &mdss_dp_out {
 	data-lanes = <0 1>;
 	remote-endpoint = <&usb_1_qmpphy_dp_in>;
+};
+
+&usb_1_qmpphy_dp_in {
+	remote-endpoint = <&mdss_dp_out>;
 };
 
 &pcie0 {
@@ -1297,6 +1344,7 @@
 
 &venus {
 	status = "okay";
+	iommus = <&apps_smmu 0x2180 0x20>;
 };
 
 /* PINCTRL - additions to nodes defined in sc7280.dtsi */
