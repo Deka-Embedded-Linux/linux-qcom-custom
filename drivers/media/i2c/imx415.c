@@ -216,6 +216,21 @@ static const struct imx415_reg imx415_mode_2_720[] = {
 	{ IMX415_TLPX, 0x0027 },
 };
 
+static const struct imx415_reg imx415_mode_4_720[] = {
+	{ IMX415_VMAX, 0x08CA },
+	{ IMX415_HMAX, 0x07F0 },
+	{ IMX415_LANEMODE, IMX415_LANEMODE_4 },
+	{ IMX415_TCLKPOST, 0x006F },
+	{ IMX415_TCLKPREPARE, 0x002F },
+	{ IMX415_TCLKTRAIL, 0x002F },
+	{ IMX415_TCLKZERO, 0x00BF },
+	{ IMX415_THSPREPARE, 0x002F },
+	{ IMX415_THSZERO, 0x0057 },
+	{ IMX415_THSTRAIL, 0x002F },
+	{ IMX415_THSEXIT, 0x004F },
+	{ IMX415_TLPX, 0x0027 },
+};
+
 /* all-pixel 2-lane 1440 Mbps 30.01 Hz mode */
 static const struct imx415_reg imx415_mode_2_1440[] = {
 	{ IMX415_VMAX, 0x08CA },
@@ -299,6 +314,16 @@ static const struct imx415_mode supported_modes[] = {
 		.reg_list = {
 			.num_of_regs = ARRAY_SIZE(imx415_mode_2_720),
 			.regs = imx415_mode_2_720,
+		},
+	},
+	{
+		.lane_rate = 720000000,
+		.lanes = 4,
+		.hmax_pix = 4510,
+		.pixel_rate = 304615385,
+		.reg_list = {
+			.num_of_regs = ARRAY_SIZE(imx415_mode_4_720),
+			.regs = imx415_mode_4_720,
 		},
 	},
 	{
@@ -1116,18 +1141,24 @@ static int imx415_parse_hw_config(struct imx415 *sensor)
 	inck = clk_get_rate(sensor->clk);
 	for (i = 0; i < bus_cfg.nr_of_link_frequencies; ++i) {
 		if (imx415_check_inck(inck, bus_cfg.link_frequencies[i])) {
-			dev_dbg(sensor->dev,
+			dev_err(sensor->dev,
 				"INCK %lu Hz not supported for this link freq",
 				inck);
 			continue;
 		}
 
 		for (j = 0; j < ARRAY_SIZE(supported_modes); ++j) {
-			if (sensor->num_data_lanes != supported_modes[j].lanes)
+			if (sensor->num_data_lanes != supported_modes[j].lanes) {
+				dev_err(sensor->dev,
+					"Skip mode %u for freq %u, lanes mismatched", j, i);
 				continue;
+			}
 			if (bus_cfg.link_frequencies[i] * 2 !=
-			    supported_modes[j].lane_rate)
+			    supported_modes[j].lane_rate) {
+				dev_err(sensor->dev,
+					"Skip mode %u for freq %u: rate mismatched", j, i);
 				continue;
+			}
 			sensor->cur_mode = j;
 			break;
 		}
